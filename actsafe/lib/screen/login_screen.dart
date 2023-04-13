@@ -1,3 +1,4 @@
+import 'package:actsafe/data/user_data.dart';
 import 'package:actsafe/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,18 +12,26 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final userData = USER_INFO.toList();
 
   void logIn(BuildContext ctx) {
-    // final enteredUsername = usernameController.text;
-    // final enteredPassword = passwordController.text;
+    final enteredUsername = usernameController.text;
+    final enteredPassword = passwordController.text;
 
-    // if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
-    //   return;
-    // }
-
-    Navigator.of(ctx).pushNamed(
-      HomeScreen.routeName,
-    );
+    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
+      return;
+    } else if (enteredUsername.isNotEmpty || enteredPassword.isNotEmpty) {
+      for (int i = 0; i > userData.length; i++) {
+        if (enteredUsername == userData[i].username &&
+            enteredPassword == userData[i].password) {
+          Navigator.of(ctx).pushNamed(
+            HomeScreen.routeName,
+          );
+        } else {
+          continue;
+        }
+      }
+    }
   }
 
   @override
@@ -46,22 +55,25 @@ class _LogInScreenState extends State<LogInScreen> {
               width: 350,
               child: Column(
                 children: <Widget>[
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    decoration: const InputDecoration(
                       label: Text('ID Number'),
                     ),
+                    controller: usernameController,
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    decoration: const InputDecoration(
                       label: Text('Password'),
                     ),
+                    controller: passwordController,
+                    onSubmitted: (_) => logIn(context),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () => logIn(context),
-                    child: Text('LOG IN'),
+                    child: const Text('LOG IN'),
                   ),
                 ],
               ),
