@@ -16,22 +16,11 @@ class _LogInScreenState extends State<LogInScreen> {
 
   void logIn(BuildContext ctx) {
     final enteredUsername = usernameController.text;
-    final enteredPassword = passwordController.text;
 
-    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
-      return;
-    } else if (enteredUsername.isNotEmpty || enteredPassword.isNotEmpty) {
-      for (int i = 0; i > userData.length; i++) {
-        if (enteredUsername == userData[i].username &&
-            enteredPassword == userData[i].password) {
-          Navigator.of(ctx).pushNamed(
-            HomeScreen.routeName,
-          );
-        } else {
-          continue;
-        }
-      }
-    }
+    Navigator.of(ctx).pushNamed(
+      HomeScreen.routeName,
+      arguments: enteredUsername,
+    );
   }
 
   @override
@@ -40,46 +29,61 @@ class _LogInScreenState extends State<LogInScreen> {
       // appBar: AppBar(
       //   title: Text('ACTSafe'),
       // ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(top: 120),
-              child: Image.asset(
-                'assets/images/logo.png',
-                height: 300,
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 100, 10, 10),
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: 300,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 10,
+            ),
+            child: TextField(
+              decoration: const InputDecoration(
+                label: Text('ID Number'),
+                border: OutlineInputBorder(),
+              ),
+              controller: usernameController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 10,
+            ),
+            child: TextField(
+              decoration: const InputDecoration(
+                label: Text('Password'),
+                border: OutlineInputBorder(),
+              ),
+              controller: passwordController,
+              onSubmitted: (_) => logIn(context),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 10,
+            ),
+            child: ElevatedButton(
+              onPressed: () => logIn(context),
+              child: const Text('LOG IN'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(
+                  50,
+                ),
               ),
             ),
-            Container(
-              width: 350,
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    decoration: const InputDecoration(
-                      label: Text('ID Number'),
-                    ),
-                    controller: usernameController,
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(
-                      label: Text('Password'),
-                    ),
-                    controller: passwordController,
-                    onSubmitted: (_) => logIn(context),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () => logIn(context),
-                    child: const Text('LOG IN'),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

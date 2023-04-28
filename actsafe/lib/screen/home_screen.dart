@@ -5,6 +5,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final username = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Homepage'),
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
                 'https://thumbs.dreamstime.com/b/welcome-concept-white-background-vector-illustration-141779560.jpg',
               ),
             ),
-            Text('Welcome'),
+            Text('Welcome $username!'),
           ],
         ),
       ),
