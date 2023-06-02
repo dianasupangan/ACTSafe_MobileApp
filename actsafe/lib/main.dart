@@ -1,5 +1,5 @@
-import 'package:actsafe/screen/home_screen.dart';
-import 'package:actsafe/screen/login_screen.dart';
+import 'package:actsafe/screen/home/home_screen.dart';
+import 'package:actsafe/screen/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'ACTSafe',
       initialRoute: '/',
       routes: {
-        '/': (context) => LogInScreen(),
+        '/': (context) => const LogInScreen(),
         HomeScreen.routeName: (context) => HomeScreen(),
       },
     );

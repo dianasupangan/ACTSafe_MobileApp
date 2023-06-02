@@ -1,3 +1,4 @@
+import 'package:actsafe/screen/home/components/qr_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -5,7 +6,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final username = ModalRoute.of(context)!.settings.arguments as String;
+    //final username = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Homepage'),
@@ -19,11 +20,10 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               width: 300,
-              child: Image.network(
-                'https://thumbs.dreamstime.com/b/welcome-concept-white-background-vector-illustration-141779560.jpg',
-              ),
+              alignment: Alignment.center,
+              child: QR_Widget(),
             ),
-            Text('Welcome $username!'),
+            Text('Welcome!'),
           ],
         ),
       ),
