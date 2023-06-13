@@ -108,28 +108,21 @@ class _LogInFormState extends State<LogInForm> {
       "id_number": usernameController.text,
       "password": passwordController.text,
     });
-    var data = json.decode(response.body);
-    if (data.toString() == "Success") {
-      userData.add(usernameController.text);
-      print(userData.items.first.idNumber.toString());
+    final utf = utf8.decode(response.bodyBytes);
+    final json = jsonDecode(utf);
+    final result = json['status'];
+    print("hi: $result");
+
+    if (result == 'Success') {
+      final id_number = json['id'];
+      final first_name = json['first_name'];
+      final last_name = json['last_name'];
+      final user_type = json['user_type'];
+      userData.add(id_number, first_name, last_name, user_type);
+      print(
+          '${userData.items.first.firstName} ${userData.items.first.lastname} ${userData.items.first.idNumber} ${userData.items.first.userType}');
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-    } else {
-      print('error');
     }
-
-    // const url = 'http://127.0.0.1/http/api.php';
-
-    // final uri = Uri.parse(url);
-    // HttpOverrides.global = MyHttpOverrides();
-    // final response = await http.get(uri);
-    // final utf = utf8.decode(response.bodyBytes);
-    // final json = jsonDecode(utf);
-    // final result = json;
-    // setState(() {
-    //   final info = result[0];
-    //   final first_name = info['first_name'];
-    //   print(first_name);
-    // });
-    // print('Fetch users completed');
+    print('Fetch users completed');
   }
 }
