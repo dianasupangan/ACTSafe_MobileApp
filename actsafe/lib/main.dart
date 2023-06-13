@@ -1,6 +1,8 @@
+import 'package:actsafe/model/user.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,17 +13,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        canvasColor: Colors.white,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => User(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+          canvasColor: Colors.white,
+        ),
+        title: 'ACTSafe',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const LogInScreen(),
+          HomeScreen.routeName: (context) => HomeScreen(),
+        },
       ),
-      title: 'ACTSafe',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LogInScreen(),
-        HomeScreen.routeName: (context) => HomeScreen(),
-      },
     );
   }
 }

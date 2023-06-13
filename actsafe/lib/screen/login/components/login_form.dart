@@ -1,6 +1,11 @@
-import 'package:actsafe/data/user_data.dart';
+import 'dart:convert';
+
+import 'package:actsafe/model/user.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class LogInForm extends StatefulWidget {
   const LogInForm({super.key});
@@ -10,6 +15,7 @@ class LogInForm extends StatefulWidget {
 }
 
 class _LogInFormState extends State<LogInForm> {
+  Map<String, dynamic> users = {};
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -77,7 +83,8 @@ class _LogInFormState extends State<LogInForm> {
           ),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+              fetchUsers();
+              // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             },
             child: const Text('LOG IN'),
             style: ElevatedButton.styleFrom(
@@ -89,5 +96,40 @@ class _LogInFormState extends State<LogInForm> {
         )
       ],
     );
+  }
+
+  void fetchUsers() async {
+    print('Fetch');
+
+    //access provider
+    final userData = Provider.of<User>(context, listen: false);
+    var url = Uri.parse("http://127.0.0.1/http/login.php");
+    var response = await http.post(url, body: {
+      "id_number": usernameController.text,
+      "password": passwordController.text,
+    });
+    var data = json.decode(response.body);
+    if (data.toString() == "Success") {
+      userData.add(usernameController.text);
+      print(userData.items.first.idNumber.toString());
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } else {
+      print('error');
+    }
+
+    // const url = 'http://127.0.0.1/http/api.php';
+
+    // final uri = Uri.parse(url);
+    // HttpOverrides.global = MyHttpOverrides();
+    // final response = await http.get(uri);
+    // final utf = utf8.decode(response.bodyBytes);
+    // final json = jsonDecode(utf);
+    // final result = json;
+    // setState(() {
+    //   final info = result[0];
+    //   final first_name = info['first_name'];
+    //   print(first_name);
+    // });
+    // print('Fetch users completed');
   }
 }

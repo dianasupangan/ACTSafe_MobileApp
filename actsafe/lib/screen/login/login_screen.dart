@@ -1,4 +1,3 @@
-import 'package:actsafe/data/user_data.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/login/components/login_form.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  final userData = USER_INFO.toList();
 
   void logIn(BuildContext ctx) {
     final enteredUsername = usernameController.text;

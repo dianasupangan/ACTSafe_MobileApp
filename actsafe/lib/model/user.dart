@@ -1,11 +1,31 @@
-class User {
-  final String id;
-  final String username;
-  final String password;
+import 'package:flutter/material.dart';
 
-  User({
-    required this.id,
-    required this.username,
-    required this.password,
+class UserInfo {
+  final String idNumber;
+
+  UserInfo({
+    required this.idNumber,
   });
+}
+
+class User extends ChangeNotifier {
+  final List<UserInfo> items = [];
+
+  void add(
+    String idNum,
+  ) async {
+    items.add(
+      UserInfo(
+        idNumber: idNum,
+      ),
+    );
+
+    notifyListeners();
+  }
+
+  void clear() {
+    items.clear();
+
+    notifyListeners();
+  }
 }

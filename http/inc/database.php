@@ -5,15 +5,14 @@ $conn = mysqli_connect( 'localhost', 'root', '', 'isproj2' );
 if(!$conn){
     die("Connection Failed: " . mysqli_connect_etrror()); 
 }
-$connect = connect();
 
     // Get the data
     $user = array();
     $sql = "SELECT *  FROM users";
 
-    if($result = mysqli_query($connect,$sql))
+    if($result = mysqli_query($conn,$sql))
     {
-      $count = mysqli_num_rows($result);
+      $count = mysqli_num_rows($sql);
 
       $cr = 0;
       while($row = mysqli_fetch_assoc($result))
