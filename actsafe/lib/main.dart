@@ -1,4 +1,5 @@
 import 'package:actsafe/model/user.dart';
+import 'package:actsafe/screen/contact/contactinfo_screen.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/login/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
         title: 'ACTSafe',
         initialRoute: '/',
         routes: {
-          '/': (context) => const LogInScreen(),
+          '/': (context) => const ContactInfoScreen(),
+          // '/': (context) => const LogInScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
         },
       ),
