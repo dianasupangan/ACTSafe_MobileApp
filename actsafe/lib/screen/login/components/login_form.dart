@@ -24,8 +24,8 @@ class _LogInFormState extends State<LogInForm> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 250, 0, 0),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 250, 0, 0),
           child: SizedBox(
             height: 10,
             width: double.infinity,
@@ -40,7 +40,7 @@ class _LogInFormState extends State<LogInForm> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(30),
             ),
-            child: Text(
+            child: const Text(
               'Log In',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
             ),
@@ -86,12 +86,12 @@ class _LogInFormState extends State<LogInForm> {
               fetchUsers();
               // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             },
-            child: const Text('LOG IN'),
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(
                 50,
               ),
             ),
+            child: const Text('LOG IN'),
           ),
         )
       ],
@@ -114,11 +114,11 @@ class _LogInFormState extends State<LogInForm> {
     print("hi: $result");
 
     if (result == 'Success') {
-      final id_number = json['id'];
-      final first_name = json['first_name'];
-      final last_name = json['last_name'];
-      final user_type = json['user_type'];
-      userData.add(id_number, first_name, last_name, user_type);
+      final idNumber = json['id'];
+      final firstName = json['first_name'];
+      final lastName = json['last_name'];
+      final userType = json['user_type'];
+      userData.add(idNumber, firstName, lastName, userType);
       print(
           '${userData.items.first.firstName} ${userData.items.first.lastname} ${userData.items.first.idNumber} ${userData.items.first.userType}');
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
@@ -126,3 +126,6 @@ class _LogInFormState extends State<LogInForm> {
     print('Fetch users completed');
   }
 }
+
+// 20230001
+// vvn123456
