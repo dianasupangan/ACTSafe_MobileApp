@@ -1,4 +1,3 @@
-import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/login/components/login_form.dart';
 import 'package:flutter/material.dart';
 
@@ -10,17 +9,7 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  void logIn(BuildContext ctx) {
-    final enteredUsername = usernameController.text;
-
-    Navigator.of(ctx).pushReplacementNamed(
-      HomeScreen.routeName,
-      arguments: enteredUsername,
-    );
-  }
+  void logIn(BuildContext ctx) {}
 
   @override
   Widget build(BuildContext context) {

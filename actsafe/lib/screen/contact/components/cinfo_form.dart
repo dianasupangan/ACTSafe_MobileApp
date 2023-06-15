@@ -9,6 +9,12 @@ class ContactForm extends StatefulWidget {
 
 class _ContactFormState extends State<ContactForm> {
   //add controller
+  final phoneNumController = TextEditingController();
+  final emailAddController = TextEditingController();
+  final guardianNameController = TextEditingController();
+  final guardianRelController = TextEditingController();
+  final guardianPhoneNumController = TextEditingController();
+  final guardianEmailAddController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Phone Number'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: phoneNumController,
           ),
         ),
         Padding(
@@ -31,7 +37,7 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Email Address'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: emailAddController,
           ),
         ),
         Padding(
@@ -41,7 +47,7 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Guardian Name'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: guardianNameController,
           ),
         ),
         Padding(
@@ -51,7 +57,7 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Relationship with Guardian'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: guardianRelController,
           ),
         ),
         Padding(
@@ -61,7 +67,7 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Guardian Phone No.'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: guardianPhoneNumController,
           ),
         ),
         Padding(
@@ -71,21 +77,23 @@ class _ContactFormState extends State<ContactForm> {
               label: Text('Guardian Email Address'),
               border: OutlineInputBorder(),
             ),
-            // controller: loanIdController,
+            controller: guardianEmailAddController,
           ),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            contactInfo();
+          },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(
               50,
             ),
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.green.shade600,
           ),
           child: const Text("Submit"),
         ),
       ],
     );
   }
+
+  Future<void> contactInfo() async {}
 }
