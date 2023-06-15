@@ -1,4 +1,5 @@
 import 'package:actsafe/model/user.dart';
+import 'package:actsafe/screen/dataprivacy/dataprivacy_screen.dart';
 import 'package:actsafe/screen/healthdec/healthdec_screen.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/login/login_screen.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         title: 'ACTSafe',
         initialRoute: '/',
         routes: {
-          '/': (context) => const HealthDeclarationScreen(),
+          '/': (context) => const DataPrivacyScreen(),
           // '/': (context) => const LogInScreen(),
           HomeScreen.routeName: (context) => const HomeScreen(),
         },
