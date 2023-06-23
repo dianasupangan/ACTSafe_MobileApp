@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../model/user.dart';
+import '../../../utils/snackbar_helper.dart';
 
 class ContactForm extends StatefulWidget {
   const ContactForm({super.key});
@@ -11,7 +18,9 @@ class _ContactFormState extends State<ContactForm> {
   //add controller
   final phoneNumController = TextEditingController();
   final emailAddController = TextEditingController();
-  final guardianNameController = TextEditingController();
+  final guardianFirstNameController = TextEditingController();
+  final guardianLastNameController = TextEditingController();
+  final salutationController = TextEditingController();
   final guardianRelController = TextEditingController();
   final guardianPhoneNumController = TextEditingController();
   final guardianEmailAddController = TextEditingController();
@@ -44,10 +53,30 @@ class _ContactFormState extends State<ContactForm> {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: TextField(
             decoration: const InputDecoration(
-              label: Text('Guardian Name'),
+              label: Text('Guardian Firstname'),
               border: OutlineInputBorder(),
             ),
-            controller: guardianNameController,
+            controller: guardianFirstNameController,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              label: Text('Guardian Lastname'),
+              border: OutlineInputBorder(),
+            ),
+            controller: guardianLastNameController,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              label: Text('Guardian Salutation'),
+              border: OutlineInputBorder(),
+            ),
+            controller: salutationController,
           ),
         ),
         Padding(
@@ -82,7 +111,7 @@ class _ContactFormState extends State<ContactForm> {
         ),
         ElevatedButton(
           onPressed: () {
-            contactInfo();
+            submitContactInfo();
           },
           style: ElevatedButton.styleFrom(
             minimumSize: const Size.fromHeight(
@@ -95,5 +124,37 @@ class _ContactFormState extends State<ContactForm> {
     );
   }
 
-  Future<void> contactInfo() async {}
+  void submitContactInfo() async {
+    final userData = Provider.of<User>(context, listen: false);
+
+    print('Submit');
+    var url = Uri.parse("http://127.0.0.1/http/contact-info.php");
+    var response = await http.post(
+      url,
+      body: {
+        "id_number": userData.items.first.idNumber.toString(),
+        "phone_number": phoneNumController.text,
+        "email_address": emailAddController.text,
+        "guardian_id": 'G-${userData.items.first.idNumber.toString()}',
+        "first_name": guardianFirstNameController.text,
+        "last_name": guardianLastNameController.text,
+        "salutation": salutationController.text,
+        "relationship": guardianRelController.text,
+        "g_phone_number": guardianPhoneNumController.text,
+        "g_email_address": guardianEmailAddController.text,
+      },
+    );
+    final utf = utf8.decode(response.bodyBytes);
+    final json = jsonDecode(utf);
+    final result = json['status'];
+    print("hi: $result");
+
+    if (result == 'Success') {
+      print('Fetch users completed');
+      Navigator.of(context).pop();
+      showSuccessMessage(context, message: "Contact Information Submitted");
+    } else {
+      showErrorMessage(context, message: "Submission Failed");
+    }
+  }
 }

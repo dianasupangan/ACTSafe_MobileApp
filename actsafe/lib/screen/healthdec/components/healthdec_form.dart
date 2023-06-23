@@ -174,7 +174,6 @@ class _HealthDecFormState extends State<HealthDecForm> {
   void submitHealthDeclaration() async {
     print('Submit');
     //access provider
-    print(traveledOverseas + contactOverseasTravel);
     final userData = Provider.of<User>(context, listen: false);
     var url = Uri.parse("http://127.0.0.1/http/health-declaration.php");
     var response = await http.post(
