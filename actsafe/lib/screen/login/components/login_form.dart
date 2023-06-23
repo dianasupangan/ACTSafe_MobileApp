@@ -25,78 +25,87 @@ class _LogInFormState extends State<LogInForm> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         const Padding(
-          padding: EdgeInsets.fromLTRB(0, 250, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 425, 0, 0),
           child: SizedBox(
             height: 10,
             width: double.infinity,
           ),
         ),
         SizedBox(
-          height: 100,
           width: double.infinity,
           child: Container(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: const Text(
-              'Log In',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-            vertical: 10,
-          ),
-          child: TextField(
-            decoration: const InputDecoration(
-              label: Text('ID Number'),
-              border: OutlineInputBorder(),
-            ),
-            controller: usernameController,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-            vertical: 10,
-          ),
-          child: TextField(
-            decoration: const InputDecoration(
-              label: Text('Password'),
-              border: OutlineInputBorder(),
-            ),
-            controller: passwordController,
-            onSubmitted: (_) {},
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
-            vertical: 10,
-          ),
-          child: ElevatedButton(
-            onPressed: () {
-              fetchUsers();
-              // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(
-                50,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40.0),
+                topLeft: Radius.circular(40.0),
               ),
             ),
-            child: const Text('LOG IN'),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      label: Text('ID Number'),
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: usernameController,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      label: Text('Password'),
+                      border: OutlineInputBorder(),
+                    ),
+                    controller: passwordController,
+                    onSubmitted: (_) {},
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 10,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      fetchUsers();
+                      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(
+                        50,
+                      ),
+                    ),
+                    child: const Text('LOG IN'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -106,7 +115,8 @@ class _LogInFormState extends State<LogInForm> {
 
     //access provider
     final userData = Provider.of<User>(context, listen: false);
-    var url = Uri.parse("http://127.0.0.1/http/login.php");
+    var url = Uri.parse(
+        "https://actsafe-automatedcontacttracing.000webhostapp.com/login.php");
     var response = await http.post(url, body: {
       "id_number": usernameController.text,
       "password": passwordController.text,

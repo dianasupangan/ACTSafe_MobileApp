@@ -175,7 +175,8 @@ class _HealthDecFormState extends State<HealthDecForm> {
     print('Submit');
     //access provider
     final userData = Provider.of<User>(context, listen: false);
-    var url = Uri.parse("http://127.0.0.1/http/health-declaration.php");
+    var url = Uri.parse(
+        "https://actsafe-automatedcontacttracing.000webhostapp.com/health-declaration.php");
     var response = await http.post(
       url,
       body: {

@@ -128,7 +128,8 @@ class _ContactFormState extends State<ContactForm> {
     final userData = Provider.of<User>(context, listen: false);
 
     print('Submit');
-    var url = Uri.parse("http://127.0.0.1/http/contact-info.php");
+    var url = Uri.parse(
+        "https://actsafe-automatedcontacttracing.000webhostapp.com/contact-info.php");
     var response = await http.post(
       url,
       body: {

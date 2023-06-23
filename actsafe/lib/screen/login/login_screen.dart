@@ -13,18 +13,21 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       // appBar: AppBar(
       //   title: Text('ACTSafe'),
       // ),
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/login_header.jpg"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter),
+      body: SingleChildScrollView(
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/login_header.jpg"),
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter),
+          ),
+          child:
+              Container(alignment: Alignment.bottomCenter, child: LogInForm()),
         ),
-        child: LogInForm(),
       ),
     );
   }
