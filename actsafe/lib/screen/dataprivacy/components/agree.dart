@@ -1,3 +1,4 @@
+import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class Agreement extends StatelessWidget {
@@ -6,7 +7,7 @@ class Agreement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,7 +33,10 @@ class Agreement extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(HomeScreen.routeName);
+              },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
                   50,

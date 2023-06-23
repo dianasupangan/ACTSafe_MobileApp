@@ -1,3 +1,4 @@
+import 'package:actsafe/global/drawer.dart';
 import 'package:actsafe/screen/home/components/qr_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //final username = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
+      drawer: Drawer(
+        child: MenuDrawer(),
+      ),
       appBar: AppBar(
         title: const Text('Homepage'),
       ),

@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:actsafe/model/user.dart';
+import 'package:actsafe/screen/dataprivacy/components/dataprivacy_notes.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import '../../dataprivacy/dataprivacy_screen.dart';
 
 class LogInForm extends StatefulWidget {
   const LogInForm({super.key});
@@ -118,10 +121,12 @@ class _LogInFormState extends State<LogInForm> {
       final firstName = json['first_name'];
       final lastName = json['last_name'];
       final userType = json['user_type'];
+
+      userData.clear();
       userData.add(idNumber, firstName, lastName, userType);
       print(
           '${userData.items.first.firstName} ${userData.items.first.lastname} ${userData.items.first.idNumber} ${userData.items.first.userType}');
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
     }
     print('Fetch users completed');
   }
