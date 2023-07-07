@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:actsafe/global/link_header.dart';
+import 'package:actsafe/screen/initialLogin/healthdec/healthdec_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../model/user.dart';
-import '../../../utils/snackbar_helper.dart';
+import '../../../../model/user.dart';
+import '../../../../utils/snackbar_helper.dart';
 
 class ContactForm extends StatefulWidget {
   const ContactForm({super.key});
@@ -133,6 +134,7 @@ class _ContactFormState extends State<ContactForm> {
     var response = await http.post(
       url,
       body: {
+        "state": "state_initial_contact_info",
         "id_number": userData.items.first.idNumber.toString(),
         "phone_number": phoneNumController.text,
         "email_address": emailAddController.text,
@@ -151,8 +153,10 @@ class _ContactFormState extends State<ContactForm> {
     print("hi: $result");
 
     if (result == 'Success') {
-      print('Fetch users completed');
-      Navigator.of(context).pop();
+      print('Contact Information Submitted');
+
+      Navigator.of(context)
+          .pushReplacementNamed(InitialHealthDeclarationScreen.routeName);
       showSuccessMessage(context, message: "Contact Information Submitted");
     } else {
       showErrorMessage(context, message: "Submission Failed");

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:actsafe/global/link_header.dart';
 import 'package:actsafe/model/user.dart';
 import 'package:actsafe/screen/dataprivacy/components/dataprivacy_notes.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
+import 'package:actsafe/utils/snackbar_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -28,7 +30,7 @@ class _LogInFormState extends State<LogInForm> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         const Padding(
-          padding: EdgeInsets.fromLTRB(0, 425, 0, 0),
+          padding: EdgeInsets.fromLTRB(0, 375, 0, 0),
           child: SizedBox(
             height: 10,
             width: double.infinity,
@@ -73,6 +75,7 @@ class _LogInFormState extends State<LogInForm> {
                     vertical: 10,
                   ),
                   child: TextField(
+                    obscureText: true,
                     decoration: const InputDecoration(
                       label: Text('Password'),
                       border: OutlineInputBorder(),
@@ -115,30 +118,33 @@ class _LogInFormState extends State<LogInForm> {
 
     //access provider
     final userData = Provider.of<User>(context, listen: false);
-    var url = Uri.parse(
-        "https://actsafe-automatedcontacttracing.000webhostapp.com/login.php");
+    var url = Uri.parse(link_header);
     var response = await http.post(url, body: {
+      "state": "state_login",
       "id_number": usernameController.text,
       "password": passwordController.text,
     });
     final utf = utf8.decode(response.bodyBytes);
     final json = jsonDecode(utf);
     final result = json['status'];
-    print("hi: $result");
+    print("hi: $json");
 
     if (result == 'Success') {
       final idNumber = json['id'];
       final firstName = json['first_name'];
       final lastName = json['last_name'];
       final userType = json['user_type'];
+      final isActive = json['is_active'];
 
       userData.clear();
-      userData.add(idNumber, firstName, lastName, userType);
-      print(
-          '${userData.items.first.firstName} ${userData.items.first.lastname} ${userData.items.first.idNumber} ${userData.items.first.userType}');
+      userData.add(idNumber, firstName, lastName, userType, isActive);
+      showSuccessMessage(context, message: "Login successful!");
       Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
+
+      print('Fetch users completed');
+    } else if (result == 'Invalid account') {
+      showErrorMessage(context, message: "Account does not exist");
     }
-    print('Fetch users completed');
   }
 }
 

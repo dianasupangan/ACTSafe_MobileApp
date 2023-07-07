@@ -1,5 +1,6 @@
 import 'package:actsafe/screen/contact/contactinfo_screen.dart';
 import 'package:actsafe/screen/healthdec/healthdec_screen.dart';
+import 'package:actsafe/screen/symptom/symptom_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screen/home/home_screen.dart';
@@ -37,7 +38,7 @@ class MenuDrawer extends StatelessWidget {
           title: const Text('Symptoms'),
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(HealthDeclarationScreen.routeName);
+            Navigator.of(context).pushNamed(SymptomsScreen.routeName);
           },
         ),
         ListTile(

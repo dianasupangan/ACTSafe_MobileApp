@@ -1,9 +1,18 @@
 import 'package:actsafe/screen/home/home_screen.dart';
+import 'package:actsafe/screen/initialLogin/contact/contactinfo_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Agreement extends StatelessWidget {
+import '../../../model/user.dart';
+
+class Agreement extends StatefulWidget {
   const Agreement({super.key});
 
+  @override
+  State<Agreement> createState() => _AgreementState();
+}
+
+class _AgreementState extends State<Agreement> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,8 +43,7 @@ class Agreement extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(HomeScreen.routeName);
+                isInitial();
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
@@ -48,5 +56,17 @@ class Agreement extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  isInitial() {
+    final userData = Provider.of<User>(context, listen: false);
+    final isActive = userData.items.first.isActive.toString();
+
+    if (isActive == "True") {
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } else if (isActive == "False") {
+      Navigator.of(context)
+          .pushReplacementNamed(InitialContactInfoScreen.routeName);
+    }
   }
 }
