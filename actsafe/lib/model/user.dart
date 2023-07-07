@@ -19,8 +19,13 @@ class UserInfo {
 class User extends ChangeNotifier {
   final List<UserInfo> items = [];
 
-  void add(String idNum, String fName, String lName, String uType,
-      String iActive) async {
+  void add(
+    String idNum,
+    String fName,
+    String lName,
+    String uType,
+    String iActive,
+  ) async {
     items.add(
       UserInfo(
         idNumber: idNum,

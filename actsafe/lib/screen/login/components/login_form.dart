@@ -1,15 +1,18 @@
 import 'dart:convert';
 
 import 'package:actsafe/global/link_header.dart';
+import 'package:actsafe/model/infection_status.dart';
 import 'package:actsafe/model/user.dart';
 import 'package:actsafe/screen/dataprivacy/components/dataprivacy_notes.dart';
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/utils/snackbar_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../../../global/validate.dart';
 import '../../dataprivacy/dataprivacy_screen.dart';
 
 class LogInForm extends StatefulWidget {
@@ -23,6 +26,8 @@ class _LogInFormState extends State<LogInForm> {
   Map<String, dynamic> users = {};
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isId = true;
+  bool isPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -62,11 +67,22 @@ class _LogInFormState extends State<LogInForm> {
                     vertical: 10,
                   ),
                   child: TextField(
-                    decoration: const InputDecoration(
+                    onChanged: (value) {
+                      setState(() {
+                        isId = Validate().validateStudentId(value);
+                      });
+                    },
+                    decoration: InputDecoration(
                       label: Text('ID Number'),
                       border: OutlineInputBorder(),
+                      errorText:
+                          isId == true ? null : "Please enter your ID Number",
                     ),
                     controller: usernameController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                    ],
                   ),
                 ),
                 Padding(
@@ -75,10 +91,22 @@ class _LogInFormState extends State<LogInForm> {
                     vertical: 10,
                   ),
                   child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        if (passwordController.text == "") {
+                          isPassword = false;
+                        } else {
+                          isPassword = true;
+                        }
+                      });
+                    },
                     obscureText: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       label: Text('Password'),
                       border: OutlineInputBorder(),
+                      errorText: isPassword == true
+                          ? null
+                          : "Please enter your password",
                     ),
                     controller: passwordController,
                     onSubmitted: (_) {},
@@ -118,6 +146,7 @@ class _LogInFormState extends State<LogInForm> {
 
     //access provider
     final userData = Provider.of<User>(context, listen: false);
+    final infectionData = Provider.of<CovidStatus>(context, listen: false);
     var url = Uri.parse(link_header);
     var response = await http.post(url, body: {
       "state": "state_login",
@@ -135,9 +164,14 @@ class _LogInFormState extends State<LogInForm> {
       final lastName = json['last_name'];
       final userType = json['user_type'];
       final isActive = json['is_active'];
+      final covidStatus = json['covid_status'];
 
       userData.clear();
+      infectionData.clear();
+
+      infectionData.add(covidStatus);
       userData.add(idNumber, firstName, lastName, userType, isActive);
+
       showSuccessMessage(context, message: "Login successful!");
       Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
 
