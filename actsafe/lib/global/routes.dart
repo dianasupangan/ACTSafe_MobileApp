@@ -1,10 +1,10 @@
 import 'package:actsafe/screen/initialLogin/contact/contactinfo_screen.dart';
 import 'package:actsafe/screen/login/login_screen.dart';
-import 'package:actsafe/screen/symptom/symptom_screen.dart';
+import 'package:actsafe/screen/forms/symptom/symptom_screen.dart';
 import 'package:flutter/widgets.dart';
-import '../screen/contact/contactinfo_screen.dart';
+import '../screen/forms/contact/contactinfo_screen.dart';
 import '../screen/dataprivacy/dataprivacy_screen.dart';
-import '../screen/healthdec/healthdec_screen.dart';
+import '../screen/forms/healthdec/healthdec_screen.dart';
 import '../screen/home/home_screen.dart';
 import '../screen/initialLogin/healthdec/healthdec_screen.dart';
 import '../screen/initialLogin/symptom/symptom_screen.dart';

@@ -1,6 +1,6 @@
-import 'package:actsafe/screen/contact/contactinfo_screen.dart';
-import 'package:actsafe/screen/healthdec/healthdec_screen.dart';
-import 'package:actsafe/screen/symptom/symptom_screen.dart';
+import 'package:actsafe/screen/forms/contact/contactinfo_screen.dart';
+import 'package:actsafe/screen/forms/healthdec/healthdec_screen.dart';
+import 'package:actsafe/screen/forms/symptom/symptom_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screen/home/home_screen.dart';
@@ -28,6 +28,14 @@ class MenuDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.airline_seat_individual_suite_outlined),
           title: const Text('COVID Infection Status'),
+          onTap: () {
+            Navigator.of(context).pop();
+            // Navigator.of(context).pushNamed(HealthDeclarationScreen.routeName);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.edit_document),
+          title: const Text('Health Declaration'),
           onTap: () {
             Navigator.of(context).pop();
             Navigator.of(context).pushNamed(HealthDeclarationScreen.routeName);
