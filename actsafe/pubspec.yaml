@@ -38,6 +38,11 @@ dependencies:
   qr_flutter: ^4.1.0
   http: ^1.0.0
   provider: ^6.0.5
+  shared_preferences: ^2.2.0
+  flutter_ble_peripheral: ^1.2.0
+  flutter_blue_plus: ^1.5.2
+  intl: ^0.18.1
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:

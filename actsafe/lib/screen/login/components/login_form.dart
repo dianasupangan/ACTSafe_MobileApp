@@ -1,16 +1,13 @@
 import 'dart:convert';
 
 import 'package:actsafe/global/link_header.dart';
-import 'package:actsafe/model/infection_status.dart';
-import 'package:actsafe/model/user.dart';
-import 'package:actsafe/screen/dataprivacy/components/dataprivacy_notes.dart';
-import 'package:actsafe/screen/home/home_screen.dart';
+import 'package:actsafe/global/sha256_converter.dart';
 import 'package:actsafe/utils/snackbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../global/validate.dart';
 import '../../dataprivacy/dataprivacy_screen.dart';
@@ -23,7 +20,7 @@ class LogInForm extends StatefulWidget {
 }
 
 class _LogInFormState extends State<LogInForm> {
-  Map<String, dynamic> users = {};
+  late SharedPreferences prefs;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   bool isId = true;
@@ -45,7 +42,7 @@ class _LogInFormState extends State<LogInForm> {
           width: double.infinity,
           child: Container(
             alignment: Alignment.bottomCenter,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(40.0),
@@ -54,9 +51,9 @@ class _LogInFormState extends State<LogInForm> {
             ),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 10),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 30, 0, 10),
+                  child: Text(
                     'Log In',
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
                   ),
@@ -73,8 +70,8 @@ class _LogInFormState extends State<LogInForm> {
                       });
                     },
                     decoration: InputDecoration(
-                      label: Text('ID Number'),
-                      border: OutlineInputBorder(),
+                      label: const Text('ID Number'),
+                      border: const OutlineInputBorder(),
                       errorText:
                           isId == true ? null : "Please enter your ID Number",
                     ),
@@ -102,8 +99,8 @@ class _LogInFormState extends State<LogInForm> {
                     },
                     obscureText: true,
                     decoration: InputDecoration(
-                      label: Text('Password'),
-                      border: OutlineInputBorder(),
+                      label: const Text('Password'),
+                      border: const OutlineInputBorder(),
                       errorText: isPassword == true
                           ? null
                           : "Please enter your password",
@@ -142,45 +139,44 @@ class _LogInFormState extends State<LogInForm> {
   }
 
   void fetchUsers() async {
-    print('Fetch');
+    prefs = await SharedPreferences.getInstance();
 
-    //access provider
-    final userData = Provider.of<User>(context, listen: false);
-    final infectionData = Provider.of<CovidStatus>(context, listen: false);
-    var url = Uri.parse(link_header);
-    var response = await http.post(url, body: {
-      "state": "state_login",
-      "id_number": usernameController.text,
-      "password": passwordController.text,
-    });
-    final utf = utf8.decode(response.bodyBytes);
-    final json = jsonDecode(utf);
-    final result = json['status'];
-    print("hi: $json");
+    try {
+      var url = Uri.parse(link_header);
+      var response = await http.post(url, body: {
+        "state": "state_login",
+        "id_number": usernameController.text,
+        "password": sha256Encode(passwordController.text),
+      });
+      final utf = utf8.decode(response.bodyBytes);
+      final json = jsonDecode(utf);
+      final result = json['status'];
+      print("hi: $json" + sha256Encode(passwordController.text));
 
-    if (result == 'Success') {
-      final idNumber = json['id'];
-      final firstName = json['first_name'];
-      final lastName = json['last_name'];
-      final userType = json['user_type'];
-      final isActive = json['is_active'];
-      final covidStatus = json['covid_status'];
+      if (result == 'Success') {
+        Map userData = {
+          'id_number': json['id'],
+          'device_id': json['device_id'],
+          'first_name': json['first_name'],
+          'last_name': json['last_name'],
+          'user_type': json['user_type'],
+          'is_active': json['is_active'],
+        };
 
-      userData.clear();
-      infectionData.clear();
+        prefs.setString('user_data', jsonEncode(userData));
 
-      infectionData.add(covidStatus);
-      userData.add(idNumber, firstName, lastName, userType, isActive);
+        print(jsonDecode(prefs.getString('user_data')!) as Map);
 
-      showSuccessMessage(context, message: "Login successful!");
-      Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
+        showSuccessMessage(context, message: "Login successful!");
+        Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
 
-      print('Fetch users completed');
-    } else if (result == 'Invalid account') {
-      showErrorMessage(context, message: "Account does not exist");
+        print('Fetch users completed');
+      } else if (result == 'Invalid account') {
+        showErrorMessage(context, message: "Account does not exist");
+      }
+    } catch (err) {
+      showErrorMessage(context, message: "Connection Error");
+      print(err);
     }
   }
 }
-
-// 20230001
-// vvn123456

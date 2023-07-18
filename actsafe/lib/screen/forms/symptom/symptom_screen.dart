@@ -1,6 +1,5 @@
 import 'package:actsafe/screen/forms/symptom/symptoms_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
 class SymptomsScreen extends StatefulWidget {
   static const routeName = '/symptom-screen';
@@ -17,9 +16,9 @@ class _SymptomsScreen extends State<SymptomsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Symptoms"),
+        title: const Text("Symptoms"),
       ),
-      body: SymptomGrid(),
+      body: const SymptomGrid(),
     );
   }
 }

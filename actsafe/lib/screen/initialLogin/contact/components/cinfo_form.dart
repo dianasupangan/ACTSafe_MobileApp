@@ -4,11 +4,10 @@ import 'package:actsafe/global/link_header.dart';
 import 'package:actsafe/screen/initialLogin/healthdec/healthdec_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../global/validate.dart';
-import '../../../../model/user.dart';
 import '../../../../utils/snackbar_helper.dart';
 
 class ContactForm extends StatefulWidget {
@@ -19,6 +18,7 @@ class ContactForm extends StatefulWidget {
 }
 
 class _ContactFormState extends State<ContactForm> {
+  late SharedPreferences prefs;
   //add controller
   final phoneNumController = TextEditingController();
   final emailAddController = TextEditingController();
@@ -51,8 +51,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Phone Number'),
-              border: OutlineInputBorder(),
+              label: const Text('Phone Number'),
+              border: const OutlineInputBorder(),
               errorText: isPhoneNum == true
                   ? null
                   : "Please enter your 11-digit phone number",
@@ -73,8 +73,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Email Address'),
-              border: OutlineInputBorder(),
+              label: const Text('Email Address'),
+              border: const OutlineInputBorder(),
               errorText: isEmail == true ? null : "Please enter your email",
             ),
             controller: emailAddController,
@@ -90,8 +90,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Guardian Firstname'),
-              border: OutlineInputBorder(),
+              label: const Text('Guardian Firstname'),
+              border: const OutlineInputBorder(),
               errorText: isGFName == true
                   ? null
                   : "Please enter your guardian's firstname",
@@ -109,8 +109,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Guardian Lastname'),
-              border: OutlineInputBorder(),
+              label: const Text('Guardian Lastname'),
+              border: const OutlineInputBorder(),
               errorText: isGLName == true
                   ? null
                   : "Please enter your guardian's lastname",
@@ -128,8 +128,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Guardian Salutation'),
-              border: OutlineInputBorder(),
+              label: const Text('Guardian Salutation'),
+              border: const OutlineInputBorder(),
               errorText: isSalutaion == true
                   ? null
                   : "Please enter your guardian's salutation",
@@ -147,8 +147,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Relationship with Guardian'),
-              border: OutlineInputBorder(),
+              label: const Text('Relationship with Guardian'),
+              border: const OutlineInputBorder(),
               errorText: isGRel == true
                   ? null
                   : "Please enter your relationship with your guardian",
@@ -165,8 +165,8 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Guardian Phone No.'),
-              border: OutlineInputBorder(),
+              label: const Text('Guardian Phone No.'),
+              border: const OutlineInputBorder(),
               errorText: isGPhoneNum == true
                   ? null
                   : "Please enter your guardian's valid phone number",
@@ -187,11 +187,11 @@ class _ContactFormState extends State<ContactForm> {
               });
             },
             decoration: InputDecoration(
-              label: Text('Guardian Email Address'),
-              border: OutlineInputBorder(),
+              label: const Text('Guardian Email Address'),
+              border: const OutlineInputBorder(),
               errorText: isGEmail == true
                   ? null
-                  : "Please enter your guardian's valid phone number",
+                  : "Please enter your guardian's valid email",
             ),
             controller: guardianEmailAddController,
             keyboardType: TextInputType.emailAddress,
@@ -232,39 +232,42 @@ class _ContactFormState extends State<ContactForm> {
   }
 
   void submitContactInfo() async {
-    final userData = Provider.of<User>(context, listen: false);
+    prefs = await SharedPreferences.getInstance();
+    final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 
-    print('Submit');
-    var url = Uri.parse(link_header);
-    var response = await http.post(
-      url,
-      body: {
-        "state": "state_initial_contact_info",
-        "id_number": userData.items.first.idNumber.toString(),
-        "phone_number": phoneNumController.text,
-        "email_address": emailAddController.text,
-        "guardian_id": 'G-${userData.items.first.idNumber.toString()}',
-        "first_name": guardianFirstNameController.text,
-        "last_name": guardianLastNameController.text,
-        "salutation": salutationController.text,
-        "relationship": guardianRelController.text,
-        "g_phone_number": guardianPhoneNumController.text,
-        "g_email_address": guardianEmailAddController.text,
-      },
-    );
-    final utf = utf8.decode(response.bodyBytes);
-    final json = jsonDecode(utf);
-    final result = json['status'];
-    print("hi: $result");
+    try {
+      var url = Uri.parse(link_header);
+      var response = await http.post(
+        url,
+        body: {
+          "state": "state_initial_contact_info",
+          "id_number": userData['id_number'].toString(),
+          "phone_number": phoneNumController.text,
+          "email_address": emailAddController.text,
+          "guardian_id": 'G-${userData['id_number'].toString()}',
+          "first_name": guardianFirstNameController.text,
+          "last_name": guardianLastNameController.text,
+          "salutation": salutationController.text,
+          "relationship": guardianRelController.text,
+          "g_phone_number": guardianPhoneNumController.text,
+          "g_email_address": guardianEmailAddController.text,
+        },
+      );
+      final utf = utf8.decode(response.bodyBytes);
+      final json = jsonDecode(utf);
+      final result = json['status'];
 
-    if (result == 'Success') {
-      print('Contact Information Submitted');
+      if (result == 'Success') {
+        print('Contact Information Submitted');
 
-      Navigator.of(context)
-          .pushReplacementNamed(InitialHealthDeclarationScreen.routeName);
-      showSuccessMessage(context, message: "Contact Information Submitted");
-    } else {
-      showErrorMessage(context, message: "Submission Failed");
+        Navigator.of(context)
+            .pushReplacementNamed(InitialHealthDeclarationScreen.routeName);
+        showSuccessMessage(context, message: "Contact Information Submitted");
+      } else {
+        showErrorMessage(context, message: "Submission Failed");
+      }
+    } catch (err) {
+      showErrorMessage(context, message: "Connection error");
     }
   }
 }

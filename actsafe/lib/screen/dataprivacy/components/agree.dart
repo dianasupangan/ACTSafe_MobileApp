@@ -1,9 +1,9 @@
+import 'dart:convert';
+
 import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:actsafe/screen/initialLogin/contact/contactinfo_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../../model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Agreement extends StatefulWidget {
   const Agreement({super.key});
@@ -13,6 +13,7 @@ class Agreement extends StatefulWidget {
 }
 
 class _AgreementState extends State<Agreement> {
+  late SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,7 +44,7 @@ class _AgreementState extends State<Agreement> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                isInitial();
+                redirectNextPage();
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(
@@ -58,9 +59,11 @@ class _AgreementState extends State<Agreement> {
     );
   }
 
-  isInitial() {
-    final userData = Provider.of<User>(context, listen: false);
-    final isActive = userData.items.first.isActive.toString();
+  void redirectNextPage() async {
+    prefs = await SharedPreferences.getInstance();
+    final json = jsonDecode(prefs.getString('user_data')!) as Map;
+
+    final isActive = json['is_active'];
 
     if (isActive == "True") {
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
@@ -68,5 +71,6 @@ class _AgreementState extends State<Agreement> {
       Navigator.of(context)
           .pushReplacementNamed(InitialContactInfoScreen.routeName);
     }
+    //True and False
   }
 }

@@ -2,10 +2,8 @@ import 'dart:convert';
 
 import 'package:actsafe/global/link_header.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-
-import '../../../model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../utils/snackbar_helper.dart';
 
 class SymptomGrid extends StatefulWidget {
@@ -16,6 +14,7 @@ class SymptomGrid extends StatefulWidget {
 }
 
 class _SymptomGridState extends State<SymptomGrid> {
+  late SharedPreferences prefs;
   bool bodyache = false;
   bool breathShort = false;
   bool diarrhea = false;
@@ -42,13 +41,13 @@ class _SymptomGridState extends State<SymptomGrid> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.all(10),
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           GridView.count(
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             // Create a grid with 2 columns. If you change the scrollDirection to
             // horizontal, this produces 2 rows.
             crossAxisCount: 2,
@@ -57,19 +56,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Bodyache
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/bodyache.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Bodyache",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -98,19 +97,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Breathing Shortness
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/breathShort.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Breathing\nShortness ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -139,19 +138,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Diarrhea
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/diarrhea.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Diarrhea",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -180,19 +179,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Dry Cough
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/dryCough.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Dry Cough",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -221,19 +220,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Fatigue
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/fatigue.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Fatigue",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -262,19 +261,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Fever
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/fever.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Fever",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -303,19 +302,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Headache
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/headache.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Headache",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -344,19 +343,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Loss of Taste & Smell
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/lossTandS.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Loss of Taste\n& Smell",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -385,19 +384,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               //Runny Nose
               Card(
                 child: Column(children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Image.asset(
                     'assets/images/symptoms/runnyNose.png',
-                    height: 125,
-                    width: 125,
+                    height: 100,
+                    width: 100,
                     alignment: Alignment.center,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Runny Nose",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -427,19 +426,19 @@ class _SymptomGridState extends State<SymptomGrid> {
               Card(
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Image.asset(
                       'assets/images/symptoms/sorethroat.png',
-                      height: 125,
-                      width: 125,
+                      height: 100,
+                      width: 100,
                       alignment: Alignment.center,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Sore Throat",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -470,17 +469,17 @@ class _SymptomGridState extends State<SymptomGrid> {
           ),
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Card(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("NONE"),
+                      const Text("NONE"),
                       Checkbox(
                         value: none,
                         onChanged: (value) {
@@ -515,7 +514,7 @@ class _SymptomGridState extends State<SymptomGrid> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],
@@ -524,11 +523,11 @@ class _SymptomGridState extends State<SymptomGrid> {
           ),
           Center(
             child: Container(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               width: double.infinity,
               height: 70,
               child: ElevatedButton(
-                child: Text("Submit"),
+                child: const Text("Submit"),
                 onPressed: () {
                   submitSymptom();
                 },
@@ -541,14 +540,13 @@ class _SymptomGridState extends State<SymptomGrid> {
   }
 
   void submitSymptom() async {
-    print('Fetch');
+    prefs = await SharedPreferences.getInstance();
+    final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 
-    //access provider
-    final userData = Provider.of<User>(context, listen: false);
     var url = Uri.parse(link_header);
     var response = await http.post(url, body: {
       "state": 'state_update_symptoms',
-      "id_number": userData.items.first.idNumber.toString(),
+      "id_number": userData['id_number'].toString(),
       "fever": feverA,
       "dry_cough": dryCoughA,
       "fatigue": fatigueA,

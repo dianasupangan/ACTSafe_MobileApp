@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:actsafe/global/link_header.dart';
-import 'package:actsafe/screen/home/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../model/infection_status.dart';
-import '../../../../model/user.dart';
 import '../../../../utils/snackbar_helper.dart';
 
 class HealthDecForm extends StatefulWidget {
@@ -19,6 +16,7 @@ class HealthDecForm extends StatefulWidget {
 }
 
 class _HealthDecFormState extends State<HealthDecForm> {
+  late SharedPreferences prefs;
   bool q1 = false;
   bool q2 = false;
   bool q3 = false;
@@ -174,18 +172,17 @@ class _HealthDecFormState extends State<HealthDecForm> {
   }
 
   void submitHealthDeclaration() async {
+    prefs = await SharedPreferences.getInstance();
+    final userData = jsonDecode(prefs.getString('user_data')!) as Map;
     print('Submit');
-    //access provider
-    final userData = Provider.of<User>(context, listen: false);
-    final infectionData = Provider.of<CovidStatus>(context, listen: false);
+
     var url = Uri.parse(link_header);
     var response = await http.post(
       url,
       body: {
         "state": "state_update_health_dec",
-        "id_number": userData.items.first.idNumber.toString(),
-        "covid_infection_status":
-            infectionData.items.last.covidStatus.toString(),
+        "id_number": userData['id_number'].toString(),
+        "covid_infection_status": userData['covidStatus'].toString(),
         "contact_infected": contactInfected,
         "traveled_overseas": traveledOverseas,
         "contact_overseas_travel": contactOverseasTravel,

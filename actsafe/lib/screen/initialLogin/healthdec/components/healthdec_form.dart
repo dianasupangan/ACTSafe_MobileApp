@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:actsafe/screen/initialLogin/symptom/symptom_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../global/link_header.dart';
-import '../../../../model/user.dart';
 import '../../../../utils/snackbar_helper.dart';
 
 class HealthDecForm extends StatefulWidget {
@@ -18,6 +17,7 @@ class HealthDecForm extends StatefulWidget {
 }
 
 class _HealthDecFormState extends State<HealthDecForm> {
+  late SharedPreferences prefs;
   bool q1 = false;
   bool q2 = false;
   bool q3 = false;
@@ -173,32 +173,36 @@ class _HealthDecFormState extends State<HealthDecForm> {
   }
 
   void submitHealthDeclaration() async {
-    print('Submit');
-    //access provider
-    final userData = Provider.of<User>(context, listen: false);
-    var url = Uri.parse(link_header);
-    var response = await http.post(
-      url,
-      body: {
-        "state": "state_initial_health_dec",
-        "id_number": userData.items.first.idNumber.toString(),
-        "contact_infected": contactInfected,
-        "traveled_overseas": traveledOverseas,
-        "contact_overseas_travel": contactOverseasTravel,
-      },
-    );
-    final utf = utf8.decode(response.bodyBytes);
-    final json = jsonDecode(utf);
-    final result = json['status'];
-    print("hi: $result");
+    prefs = await SharedPreferences.getInstance();
+    final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 
-    if (result == 'Success') {
-      print('Fetch users completed');
-      Navigator.of(context)
-          .pushReplacementNamed(InitialSymptomsScreen.routeName);
-      showSuccessMessage(context, message: "Health Declaration Submitted");
-    } else {
-      showErrorMessage(context, message: "Submission Failed");
+    try {
+      var url = Uri.parse(link_header);
+      var response = await http.post(
+        url,
+        body: {
+          "state": "state_initial_health_dec",
+          "id_number": userData['id_number'].toString(),
+          "contact_infected": contactInfected,
+          "traveled_overseas": traveledOverseas,
+          "contact_overseas_travel": contactOverseasTravel,
+        },
+      );
+      final utf = utf8.decode(response.bodyBytes);
+      final json = jsonDecode(utf);
+      final result = json['status'];
+      print("hi: $result");
+
+      if (result == 'Success') {
+        print('Fetch users completed');
+        Navigator.of(context)
+            .pushReplacementNamed(InitialSymptomsScreen.routeName);
+        showSuccessMessage(context, message: "Health Declaration Submitted");
+      } else {
+        showErrorMessage(context, message: "Submission Failed");
+      }
+    } catch (err) {
+      showErrorMessage(context, message: "Connection error");
     }
   }
 }
