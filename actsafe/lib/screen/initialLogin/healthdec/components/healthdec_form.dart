@@ -191,10 +191,8 @@ class _HealthDecFormState extends State<HealthDecForm> {
       final utf = utf8.decode(response.bodyBytes);
       final json = jsonDecode(utf);
       final result = json['status'];
-      print("hi: $result");
 
       if (result == 'Success') {
-        print('Fetch users completed');
         Navigator.of(context)
             .pushReplacementNamed(InitialSymptomsScreen.routeName);
         showSuccessMessage(context, message: "Health Declaration Submitted");

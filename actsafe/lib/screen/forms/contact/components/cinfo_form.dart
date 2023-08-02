@@ -234,7 +234,6 @@ class _ContactFormState extends State<ContactForm> {
     prefs = await SharedPreferences.getInstance();
     final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 
-    print('Submit');
     var url = Uri.parse(link_header);
     var response = await http.post(
       url,
@@ -255,10 +254,8 @@ class _ContactFormState extends State<ContactForm> {
     final utf = utf8.decode(response.bodyBytes);
     final json = jsonDecode(utf);
     final result = json['status'];
-    print("hi: $result");
 
     if (result == 'Success') {
-      print('Fetch users completed');
       Navigator.of(context).pop();
       showSuccessMessage(context, message: "Contact Information Submitted");
     } else {

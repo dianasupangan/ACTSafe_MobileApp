@@ -258,8 +258,6 @@ class _ContactFormState extends State<ContactForm> {
       final result = json['status'];
 
       if (result == 'Success') {
-        print('Contact Information Submitted');
-
         Navigator.of(context)
             .pushReplacementNamed(InitialHealthDeclarationScreen.routeName);
         showSuccessMessage(context, message: "Contact Information Submitted");

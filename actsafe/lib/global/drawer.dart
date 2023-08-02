@@ -122,7 +122,6 @@ class _MenuDrawerState extends State<MenuDrawer> {
     setState(() {
       isLogOut = prefs.containsKey("user_data");
     });
-    print(prefs.containsKey("user_data").toString());
 
     Navigator.of(context).pop();
     Navigator.of(context).pushReplacementNamed('/');

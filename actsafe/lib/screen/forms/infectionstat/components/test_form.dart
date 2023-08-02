@@ -24,6 +24,7 @@ class _CovidTestFormState extends State<CovidTestForm> {
   @override
   void initState() {
     covidStatus();
+    print(infectionData);
     super.initState();
   }
 
@@ -57,6 +58,8 @@ class _CovidTestFormState extends State<CovidTestForm> {
           ),
           child: ElevatedButton(
             onPressed: () {
+              print(infectionData);
+
               if (linkController.text.isEmpty && isLink == false) {
                 showErrorMessage(context,
                     message: "Please complete enter valid link");
@@ -86,16 +89,33 @@ class _CovidTestFormState extends State<CovidTestForm> {
 
   void covidStatus() async {
     prefs = await SharedPreferences.getInstance();
-    final json = jsonDecode(prefs.getString('user_data')!) as Map;
+    final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 
-    setState(() {
-      infectionData = json['covidStatus'].toString();
-    });
+    try {
+      var url = Uri.parse(link_header);
+      var response = await http.post(url, body: {
+        "state": "state_check_health_declaration",
+        "id_number": userData['id_number'].toString(),
+      });
+      final utf = utf8.decode(response.bodyBytes);
+      final json = jsonDecode(utf);
+      final result = json['status'];
+
+      if (result == 'Success') {
+        setState(() {
+          infectionData = json['covid_infection_status'];
+        });
+      }
+    } catch (err) {
+      showErrorMessage(context, message: "Connection Error");
+      print(err);
+    }
   }
 
   void submitPositiveCovidTest() async {
     prefs = await SharedPreferences.getInstance();
     final userData = jsonDecode(prefs.getString('user_data')!) as Map;
+    print("object");
 
     try {
       var url = Uri.parse(link_header);
@@ -107,7 +127,7 @@ class _CovidTestFormState extends State<CovidTestForm> {
       final utf = utf8.decode(response.bodyBytes);
       final json = jsonDecode(utf);
       final result = json['status'];
-      print("hi: $json");
+
       if (result == 'Success') {
         Navigator.of(context).pop();
         showSuccessMessage(context, message: "Positive Covid Test Submitted");
@@ -122,6 +142,7 @@ class _CovidTestFormState extends State<CovidTestForm> {
   void submitNegativeCovidTest() async {
     prefs = await SharedPreferences.getInstance();
     final userData = jsonDecode(prefs.getString('user_data')!) as Map;
+    print("object");
 
     try {
       var url = Uri.parse(link_header);
@@ -133,7 +154,6 @@ class _CovidTestFormState extends State<CovidTestForm> {
       final utf = utf8.decode(response.bodyBytes);
       final json = jsonDecode(utf);
       final result = json['status'];
-      print("hi: $json");
       if (result == 'Success') {
         Navigator.of(context).pop();
         showSuccessMessage(context, message: "Negative Covid Test Submitted");

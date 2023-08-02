@@ -151,7 +151,7 @@ class _LogInFormState extends State<LogInForm> {
       final utf = utf8.decode(response.bodyBytes);
       final json = jsonDecode(utf);
       final result = json['status'];
-      print("hi: $json" + sha256Encode(passwordController.text));
+      print(json);
 
       if (result == 'Success') {
         Map userData = {
@@ -165,12 +165,8 @@ class _LogInFormState extends State<LogInForm> {
 
         prefs.setString('user_data', jsonEncode(userData));
 
-        print(jsonDecode(prefs.getString('user_data')!) as Map);
-
         showSuccessMessage(context, message: "Login successful!");
         Navigator.of(context).pushReplacementNamed(DataPrivacyScreen.routeName);
-
-        print('Fetch users completed');
       } else if (result == 'Invalid account') {
         showErrorMessage(context, message: "Account does not exist");
       }

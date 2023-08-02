@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    flutterBlue.startScan(timeout: const Duration(seconds: 4));
+    flutterBlue.startScan(timeout: const Duration(days: 1));
     startScan();
     newDeviceUuid();
     super.initState();
@@ -67,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void newDeviceUuid() async {
     prefs = await SharedPreferences.getInstance();
     final json = jsonDecode(prefs.getString('user_data')!) as Map;
-    print(userUuid);
 
     final AdvertiseData advertiseData = AdvertiseData(
       serviceUuid: json['device_id'].toString(),
@@ -92,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
         for (ScanResult r in results) {
           if (r.rssi >= -60) {
             uploadScannedDevices(r.device.id.toString());
-            print(r.device.id.toString());
           }
         }
         Future.delayed(Duration(seconds: 2));
@@ -101,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void uploadScannedDevices(String deviceUuid) async {
-    print(deviceUuid);
     prefs = await SharedPreferences.getInstance();
     final userData = jsonDecode(prefs.getString('user_data')!) as Map;
 

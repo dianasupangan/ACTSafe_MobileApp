@@ -37,7 +37,6 @@ class _QR_WidgetState extends State<QR_Widget> {
 
     setState(() {
       userId = json['id_number'].toString();
-      print(userId);
     });
   }
 }

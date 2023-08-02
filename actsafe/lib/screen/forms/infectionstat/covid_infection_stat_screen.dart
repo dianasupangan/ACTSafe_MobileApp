@@ -22,14 +22,16 @@ class _CovidInfectionStatusStateScreen
       appBar: AppBar(
         title: const Text("Covid Infection Status"),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            InfectionStatus(),
-            CovidTestForm(),
-            UploadInstructions(),
-          ],
+      body: SingleChildScrollView(
+        child: const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              InfectionStatus(),
+              CovidTestForm(),
+              UploadInstructions(),
+            ],
+          ),
         ),
       ),
     );

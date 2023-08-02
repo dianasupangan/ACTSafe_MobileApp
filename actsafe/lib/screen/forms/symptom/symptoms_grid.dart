@@ -562,7 +562,6 @@ class _SymptomGridState extends State<SymptomGrid> {
     final json = jsonDecode(utf);
 
     final result = json['status'];
-    print("hi: $result");
 
     if (result == 'Success') {
       Navigator.of(context).pop();
@@ -570,6 +569,5 @@ class _SymptomGridState extends State<SymptomGrid> {
     } else {
       showErrorMessage(context, message: "Submission Failed");
     }
-    print('Fetch users completed');
   }
 }

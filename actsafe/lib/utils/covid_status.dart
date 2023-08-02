@@ -38,7 +38,6 @@ class _CovidStatusWidgetState extends State<CovidStatusWidget> {
       final utf = utf8.decode(response.bodyBytes);
       final json = jsonDecode(utf);
       final result = json['status'];
-      print(json);
 
       if (result == 'Success') {
         setState(() {
@@ -57,10 +56,10 @@ class _CovidStatusWidgetState extends State<CovidStatusWidget> {
     return covidStatus(exposureStatus, infectionStatus);
   }
 
-  Widget covidStatus(String infectionStatus, String exposureStatus) {
+  Widget covidStatus(String exposureStatus, String infectionStatus) {
     if (infectionStatus == "No" && exposureStatus == "No") {
       return notInfected();
-    } else if (exposureStatus == "Yes") {
+    } else if (exposureStatus == "Yes" && infectionStatus == "No") {
       return exposedIndicator();
     } else if (infectionStatus == "Yes") {
       return positiveIndicator();

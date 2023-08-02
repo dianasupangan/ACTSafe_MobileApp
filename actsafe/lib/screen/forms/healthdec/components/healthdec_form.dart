@@ -174,7 +174,6 @@ class _HealthDecFormState extends State<HealthDecForm> {
   void submitHealthDeclaration() async {
     prefs = await SharedPreferences.getInstance();
     final userData = jsonDecode(prefs.getString('user_data')!) as Map;
-    print('Submit');
 
     var url = Uri.parse(link_header);
     var response = await http.post(
@@ -191,10 +190,8 @@ class _HealthDecFormState extends State<HealthDecForm> {
     final utf = utf8.decode(response.bodyBytes);
     final json = jsonDecode(utf);
     final result = json['status'];
-    print("hi: $result");
 
     if (result == 'Success') {
-      print('Fetch users completed');
       Navigator.of(context).pop();
       showSuccessMessage(context, message: "Health Declaration Submitted");
     } else {
