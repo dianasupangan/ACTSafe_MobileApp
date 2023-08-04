@@ -7,6 +7,7 @@ import 'package:actsafe/screen/forms/symptom/symptom_screen.dart';
 import 'package:actsafe/screen/noConnection/no_connection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,10 +115,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
 
   void logOut() async {
     prefs = await SharedPreferences.getInstance();
+    FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
 
     await prefs.remove('user_data');
 
     await FlutterBlePeripheral().stop();
+    flutterBlue.stopScan();
 
     setState(() {
       isLogOut = prefs.containsKey("user_data");

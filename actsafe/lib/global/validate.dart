@@ -29,7 +29,7 @@ class Validate {
   }
 
   bool validateName(String input) {
-    final validCharacters = RegExp(r'^[a-zA-z]+$');
+    final validCharacters = RegExp(r'^[a-zA-z ]+$');
     if (validCharacters.hasMatch(input) == true) {
       return true;
     } else {

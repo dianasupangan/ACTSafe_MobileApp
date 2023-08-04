@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    flutterBlue.startScan(timeout: const Duration(days: 1));
+    flutterBlue.startScan(timeout: const Duration(seconds: 4));
     startScan();
     newDeviceUuid();
     super.initState();
@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final AdvertiseData advertiseData = AdvertiseData(
       serviceUuid: json['device_id'].toString(),
     );
+    print(json['device_id'].toString());
     final AdvertiseSettings advertiseSettings = AdvertiseSettings(
       advertiseMode: AdvertiseMode.advertiseModeBalanced,
       txPowerLevel: AdvertiseTxPower.advertiseTxPowerMedium,
@@ -89,8 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
     var subscription = flutterBlue.scanResults.listen(
       (results) {
         for (ScanResult r in results) {
-          if (r.rssi >= -60) {
-            uploadScannedDevices(r.device.id.toString());
+          if (r.rssi >= -60 &&
+              r.advertisementData.serviceUuids.toString().length > 3) {
+            uploadScannedDevices(
+                r.advertisementData.serviceUuids.toList().join().toString());
+            print(r.advertisementData.serviceUuids.toList().join().toString());
           }
         }
         Future.delayed(Duration(seconds: 2));
