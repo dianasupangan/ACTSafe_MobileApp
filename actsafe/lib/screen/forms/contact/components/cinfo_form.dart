@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../global/api_key.dart';
 import '../../../../global/validate.dart';
 import '../../../../utils/snackbar_helper.dart';
 
@@ -239,6 +240,7 @@ class _ContactFormState extends State<ContactForm> {
       url,
       body: {
         "state": "state_update_contact_info",
+        "api_key": apiKey(),
         "id_number": userData['id_number'].toString(),
         "phone_number": phoneNumController.text,
         "email_address": emailAddController.text,

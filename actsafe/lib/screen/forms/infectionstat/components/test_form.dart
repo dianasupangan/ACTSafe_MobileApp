@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../global/api_key.dart';
 import '../../../../global/link_header.dart';
 import '../../../../global/validate.dart';
 import '../../../../utils/snackbar_helper.dart';
@@ -95,6 +96,7 @@ class _CovidTestFormState extends State<CovidTestForm> {
       var url = Uri.parse(link_header);
       var response = await http.post(url, body: {
         "state": "state_check_health_declaration",
+        "api_key": apiKey(),
         "id_number": userData['id_number'].toString(),
       });
       final utf = utf8.decode(response.bodyBytes);

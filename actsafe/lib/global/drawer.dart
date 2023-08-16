@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screen/sentTestMessage/sentTestMessage.dart';
+import 'api_key.dart';
 import 'link_header.dart';
 
 class MenuDrawer extends StatefulWidget {
@@ -94,6 +95,7 @@ class _MenuDrawerState extends State<MenuDrawer> {
       var url = Uri.parse(link_header);
       var response = await http.post(url, body: {
         "state": "state_check_if_test_submitted",
+        "api_key": apiKey(),
         "id_number": userData['id_number'],
       });
       final utf = utf8.decode(response.bodyBytes);

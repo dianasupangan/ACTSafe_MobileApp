@@ -4,12 +4,14 @@ import 'dart:convert';
 import 'package:actsafe/global/drawer.dart';
 import 'package:actsafe/screen/home/components/qr_widget.dart';
 import 'package:actsafe/utils/covid_status.dart';
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../global/api_key.dart';
 import '../../global/link_header.dart';
 import '../../utils/snackbar_helper.dart';
 
@@ -29,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    flutterBlue.startScan(timeout: const Duration(seconds: 4));
-    startScan();
-    newDeviceUuid();
+    // flutterBlue.startScan(timeout: const Duration(seconds: 4));
+    // startScan();
+    // newDeviceUuid();
     super.initState();
   }
 
@@ -110,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
       var url = Uri.parse(link_header);
       var response = await http.post(url, body: {
         "state": "state_save_ble_uuids",
+        "api_key": apiKey(),
         "id_number": userData['id_number'].toString(),
         "device_uuid": deviceUuid,
       });

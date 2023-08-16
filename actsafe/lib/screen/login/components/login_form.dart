@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:actsafe/global/api_key.dart';
 import 'package:actsafe/global/link_header.dart';
 import 'package:actsafe/global/sha256_converter.dart';
 import 'package:actsafe/utils/snackbar_helper.dart';
@@ -120,7 +121,6 @@ class _LogInFormState extends State<LogInForm> {
                   child: ElevatedButton(
                     onPressed: () {
                       fetchUsers();
-                      // Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(
@@ -145,6 +145,7 @@ class _LogInFormState extends State<LogInForm> {
       var url = Uri.parse(link_header);
       var response = await http.post(url, body: {
         "state": "state_login",
+        "api_key": apiKey(),
         "id_number": usernameController.text,
         "password": sha256Encode(passwordController.text),
       });

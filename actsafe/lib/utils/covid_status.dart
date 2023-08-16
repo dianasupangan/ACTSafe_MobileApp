@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../global/api_key.dart';
 import '../global/link_header.dart';
 
 class CovidStatusWidget extends StatefulWidget {
@@ -33,6 +34,7 @@ class _CovidStatusWidgetState extends State<CovidStatusWidget> {
       var url = Uri.parse(link_header);
       var response = await http.post(url, body: {
         "state": "state_check_health_declaration",
+        "api_key": apiKey(),
         "id_number": userData['id_number'].toString(),
       });
       final utf = utf8.decode(response.bodyBytes);

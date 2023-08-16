@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../global/api_key.dart';
 import '../../../../utils/snackbar_helper.dart';
 
 class HealthDecForm extends StatefulWidget {
@@ -180,6 +181,7 @@ class _HealthDecFormState extends State<HealthDecForm> {
       url,
       body: {
         "state": "state_update_health_dec",
+        "api_key": apiKey(),
         "id_number": userData['id_number'].toString(),
         "covid_infection_status": userData['covidStatus'].toString(),
         "contact_infected": contactInfected,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../global/api_key.dart';
 import '../../../../global/link_header.dart';
 import '../../../../utils/snackbar_helper.dart';
 
@@ -182,6 +183,7 @@ class _HealthDecFormState extends State<HealthDecForm> {
         url,
         body: {
           "state": "state_initial_health_dec",
+          "api_key": apiKey(),
           "id_number": userData['id_number'].toString(),
           "contact_infected": contactInfected,
           "traveled_overseas": traveledOverseas,
